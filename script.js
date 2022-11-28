@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (isTimerSet()) {
             chillBro()
-            alert("Kantrybė vienintelis kelias į pilnatvę")
+            alert("Kantrybė vienintelis kelias į pilnatvę. Nespausk mygtuko, kol nepraėjo laikas. O pamokai - dar +" + failDelayInSeconds + " s")
         } else {
             calcutateIntelectualAndKnowledgeProwess().then(([hash, pepperedHash]) => {
                 if (hash === "e245b6ed7d27a61bcb9e8557a3b1bfd95f0cf74f012d8466331d754270b0869d") {
