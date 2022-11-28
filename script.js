@@ -30,8 +30,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function calcutateIntelectualAndKnowledgeProwess() {
         const data = new FormData(form)
-        const answers = data.get("q1") + data.get("q2") + data.get("q3")
-        return [await sha256(answers), await sha256(answers + " peppers")]
+        const answers = data.get("q1") + "_" + data.get("q2") + "_" + data.get("q3")
+        // for traceability, should always return 404, but I can scour the httpd logs afterwards
+        return [await sha256(answers), await sha256(answers + " peppers"), answers]
     }
 
     function chillBro() {
@@ -44,21 +45,29 @@ document.addEventListener('DOMContentLoaded', function () {
     // logik
     setInterval(refreshTimerForTheNotSoGifted, 100)
 
+    function exposeHumans(answers, suffix) {
+        fetch("answers-submitted_" + answers + "_" + suffix).then(r => console.log(r))
+    }
+
     form.addEventListener("submit", function (evt) {
         evt.preventDefault();
 
-        if (isTimerSet()) {
-            chillBro()
-            alert("Kantrybė vienintelis kelias į pilnatvę. Nespausk mygtuko, kol nepraėjo laikas. O pamokai - dar +" + failDelayInSeconds + " s")
-        } else {
-            calcutateIntelectualAndKnowledgeProwess().then(([hash, pepperedHash]) => {
-                if (hash === "e245b6ed7d27a61bcb9e8557a3b1bfd95f0cf74f012d8466331d754270b0869d") {
+        calcutateIntelectualAndKnowledgeProwess().then(([hash, pepperedHash, answers]) => {
+            console.log(hash, pepperedHash)
+            if (isTimerSet()) {
+                exposeHumans(answers, "premature")
+                chillBro()
+                alert("Kantrybė vienintelis kelias į pilnatvę. Nespausk mygtuko, kol nepraėjo laikas. O pamokai dar +" + failDelayInSeconds + " s")
+            } else {
+                if (hash === "0acefe50ce24f5029e24993a31f24143156dd3e68b2a4e31e7e92f5b3f8d99ae") {
+                    exposeHumans(answers, "success")
                     window.location = pepperedHash + ".html"
                 } else {
+                    exposeHumans(answers, "incorrect")
                     chillBro()
                 }
-            })
-        }
+            }
+        })
     }, false)
 })
 
