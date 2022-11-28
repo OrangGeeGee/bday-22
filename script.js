@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // constants
     const failDelayInSeconds = 20
     const timerKey = "timer"
     const form = document.getElementById("tehtest")
 
+    // functions
     const readTimer = () => isTimerSet() ? parseInt(localStorage.getItem(timerKey)) : undefined
     const isTimerSet = () => localStorage.getItem(timerKey) !== null
     const setTimer = (time) => localStorage.setItem(timerKey, time)
@@ -39,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimer(readTimer() + failDelayInSeconds * 1000)
     }
 
+    // logik
     setInterval(refreshTimerForTheNotSoGifted, 100)
 
     form.addEventListener("submit", function (evt) {
